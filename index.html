@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>XV años de Cecilia</title>
+<meta name="description" content="Estás invitado a celebrar mis XV años. Abre la invitación.">
+<meta property="og:title" content="Estás invitado a mis XV años ✨">
+<meta property="og:description" content="Abre tu invitación y confirma tu asistencia.">
+<meta property="og:type" content="website">
+<!-- Para que WhatsApp muestre una foto al compartir, pon la URL completa de una imagen JPG: -->
+<!-- <meta property="og:image" content="https://TU-USUARIO.github.io/invitacion-xv/img/portada.jpg"> -->
+<meta name="theme-color" content="#170e17">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="demo-ribbon" id="demoRibbon" hidden>Vista de demostración</div>
+
+<!-- ================= PORTADA ================= -->
+<section class="cover" id="cover" aria-label="Portada de la invitación">
+  <div class="door door-l" aria-hidden="true"></div>
+  <div class="door door-r" aria-hidden="true"></div>
+  <div class="cover-inner">
+    <div class="ball-wrap" aria-hidden="true"><canvas class="ball" id="coverBall" width="240" height="240"></canvas></div>
+    <p class="eyebrow" data-bind="frasePortada">Mis XV años</p>
+    <h1 class="name" data-bind="nombre">Cecilia</h1>
+    <p class="cover-date" data-bind="fechaTexto"></p>
+    <p class="cover-guest" id="coverGuest" hidden></p>
+    <button class="btn btn-shine" id="openBtn" type="button">
+      <span>Abrir invitación</span>
+    </button>
+    <p class="cover-hint">Activa el sonido para vivir la experiencia</p>
+  </div>
+</section>
+
+<!-- ================= CONTENIDO ================= -->
+<main id="main" class="main" aria-hidden="true">
+
+  <header class="hero wrap">
+    <div class="ball-wrap" aria-hidden="true"><canvas class="ball ball-hero" id="heroBall" width="320" height="320"></canvas></div>
+    <p class="eyebrow reveal" data-bind="frasePortada">Mis XV años</p>
+    <h2 class="name name-hero reveal" data-bind="nombre">Cecilia</h2>
+    <div class="hero-meta reveal">
+      <span data-bind="fechaTexto"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span data-bind="horaTexto"></span>
+    </div>
+    <p class="guest-pass reveal" id="heroGuest" hidden></p>
+  </header>
+
+  <section class="wrap section message reveal" aria-labelledby="msgTitle">
+    <h3 id="msgTitle" class="section-title">Te invito</h3>
+    <div class="message-text" id="messageText"></div>
+    <p class="signature" data-bind="nombre">Cecilia</p>
+  </section>
+
+  <section class="wrap section reveal" aria-labelledby="cdTitle">
+    <h3 id="cdTitle" class="section-title">Falta muy poco</h3>
+    <div class="countdown" id="countdown" role="timer" aria-live="off">
+      <div class="cd-tile"><span class="cd-num" id="cdD">00</span><span class="cd-lbl">días</span></div>
+      <div class="cd-tile"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">horas</span></div>
+      <div class="cd-tile"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">minutos</span></div>
+      <div class="cd-tile"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">segundos</span></div>
+    </div>
+    <p class="cd-done" id="cdDone" hidden>¡Hoy es la gran noche!</p>
+  </section>
+
+  <section class="wrap section reveal" aria-labelledby="galTitle">
+    <h3 id="galTitle" class="section-title">Momentos</h3>
+    <div class="carousel" id="carousel">
+      <div class="track" id="track" tabindex="0" aria-label="Galería de fotos, desliza para ver más"></div>
+      <button class="nav prev" id="prevBtn" type="button" aria-label="Foto anterior">‹</button>
+      <button class="nav next" id="nextBtn" type="button" aria-label="Foto siguiente">›</button>
+    </div>
+    <div class="dots" id="dots" role="tablist" aria-label="Elegir foto"></div>
+    <p class="small-note">Toca una foto para verla en grande</p>
+  </section>
+
+  <section class="wrap section reveal" aria-labelledby="detTitle">
+    <h3 id="detTitle" class="section-title">La celebración</h3>
+    <dl class="details">
+      <div class="detail"><dt>Fecha</dt><dd data-bind="fechaTexto"></dd></div>
+      <div class="detail"><dt>Hora</dt><dd id="horaRango"></dd></div>
+      <div class="detail"><dt>Lugar</dt><dd data-bind="lugar.nombre"></dd></div>
+      <div class="detail"><dt>Dirección</dt><dd data-bind="lugar.direccion"></dd></div>
+      <div class="detail" id="dressRow"><dt>Vestimenta</dt><dd data-bind="codigoVestimenta"></dd></div>
+    </dl>
+    <div class="map-actions">
+      <a class="btn btn-shine" id="mapsBtn" href="#" target="_blank" rel="noopener"><span>Cómo llegar</span></a>
+      <div class="map-alt">
+        <a id="wazeBtn" href="#" target="_blank" rel="noopener">Abrir en Waze</a>
+        <a id="appleBtn" href="#" target="_blank" rel="noopener">Apple Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section rsvp reveal" aria-labelledby="rsvpTitle">
+    <h3 id="rsvpTitle" class="section-title">Confirma tu asistencia</h3>
+    <p class="rsvp-pass" id="rsvpPass"></p>
+    <p class="rsvp-deadline" id="rsvpDeadline" hidden></p>
+
+    <form id="rsvpForm" class="rsvp-form" novalidate>
+      <div class="field">
+        <label for="fNombre">Nombre del invitado principal</label>
+        <input id="fNombre" name="nombre" type="text" autocomplete="name" maxlength="80" required placeholder="Tu nombre y apellido">
+      </div>
+      <div class="field">
+        <span class="label" id="lblCant">¿Cuántas personas asistirán?</span>
+        <div class="stepper" role="group" aria-labelledby="lblCant">
+          <button type="button" id="minus" aria-label="Una persona menos">−</button>
+          <output id="fCant" aria-live="polite">1</output>
+          <button type="button" id="plus" aria-label="Una persona más">+</button>
+        </div>
+        <p class="hint" id="cupoHint"></p>
+      </div>
+      <div class="field" id="acompWrap" hidden>
+        <span class="label">Nombres de los acompañantes</span>
+        <div id="acompList" class="acomp-list"></div>
+      </div>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+      <button class="btn btn-shine btn-wide" id="confirmBtn" type="submit"><span>Confirmar asistencia</span></button>
+      <button class="link-btn" id="declineBtn" type="button">No podré asistir</button>
+    </form>
+
+    <div class="rsvp-done" id="rsvpDone" hidden>
+      <p class="done-title" id="doneTitle">¡Ya casi!</p>
+      <p class="done-text" id="doneText"></p>
+      <a class="btn btn-wa btn-wide" id="waBtn" href="#" target="_blank" rel="noopener"><span>Enviar por WhatsApp</span></a>
+      <p class="wa-number">WhatsApp de los organizadores: <span id="waNumber"></span></p>
+      <button class="link-btn" id="editBtn" type="button">Corregir mis datos</button>
+    </div>
+  </section>
+
+  <footer class="wrap footer">
+    <p class="name name-foot" data-bind="nombre">Cecilia</p>
+    <p>Gracias por ser parte de esta noche.</p>
+  </footer>
+</main>
+
+<!-- Reproductor -->
+<button class="music" id="musicBtn" type="button" aria-label="Pausar música" aria-pressed="true" hidden>
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="music-lbl" id="musicLbl">Pausar</span>
+</button>
+
+<!-- Visor de fotos -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto ampliada" hidden>
+  <button class="lb-close" id="lbClose" type="button" aria-label="Cerrar">×</button>
+  <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Foto anterior">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Foto siguiente">›</button>
+  <p class="lb-count" id="lbCount"></p>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
